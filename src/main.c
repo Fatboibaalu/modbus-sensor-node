@@ -39,6 +39,18 @@ void build_read_request(uint8_t *out, uint8_t slave,uint16_t start,uint16_t coun
     
 
 }
+void build_write_request(uint8_t *out, uint8_t slave, uint16_t reg, uint16_t value){
+    out[0]=slave;
+    out[1]=0x06;
+    out[2]=high_byte(reg);
+    out[3]=low_byte(reg);
+    out[4]=high_byte(value);
+    out[5]=low_byte(value);
+    uint16_t crc = modbus_crc(out,6);
+    out[6]=low_byte(crc);
+    out[7]=high_byte(crc);
+}
+
 
 int main(){
     uint8_t frame[6]={01,03,00,00,00,02};
@@ -49,4 +61,12 @@ int main(){
     build_read_request(req, 1, 107,3);
     for (int i = 0; i < 8; i++) printf("%02X ", req[i]);
 printf("\n");
+
+uint8_t write[8];
+build_write_request(write,1,107,3);
+ for (int i = 0; i < 8; i++) printf("%02X ", write[i]);
+printf("\n");
+
+
+
 }
