@@ -1,5 +1,6 @@
 #include <stdio.h>     // instead of <iostream>
 #include <stdint.h> // gives you uint8_t and uint16_t
+#include "modbus.h"
 
 
 uint16_t modbus_crc(const uint8_t *data, uint16_t length){
@@ -22,8 +23,6 @@ uint16_t modbus_crc(const uint8_t *data, uint16_t length){
     return crc;
 
 }
-uint8_t high_byte(uint16_t value){ return value>>8; }
-uint8_t low_byte(uint16_t value){ return value & 0xFF; }
 
 void build_read_request(uint8_t *out, uint8_t slave,uint16_t start,uint16_t count ){
     out[0]=slave;
